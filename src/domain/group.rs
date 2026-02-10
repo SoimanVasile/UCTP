@@ -1,8 +1,9 @@
 #[derive(Debug)]
 pub struct Group{
-    id: usize,
-    name: String,
-    numbers_of_students: u32,
+    pub id: usize,
+    pub name: String,
+    pub numbers_of_students: u32,
+    pub courses: Vec<usize>,
 }
 
 

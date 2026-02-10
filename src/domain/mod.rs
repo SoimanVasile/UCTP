@@ -1,2 +1,4 @@
 pub mod group;
-pub mod class;
+pub mod room;
+pub mod teacher;
+pub mod course;
