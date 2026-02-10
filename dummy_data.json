@@ -1,0 +1,44 @@
+{
+  "rooms": [
+    {
+      "id": 1,
+      "name": "C309",
+      "capacity": 100,
+      "is_laboratory": false,
+      "free": []
+    }
+  ],
+  "teachers": [
+    {
+      "id": 1,
+      "name": "Prof. Popescu",
+      "course_id": [
+        101,
+        102
+      ]
+    }
+  ],
+  "courses": [
+    {
+      "id": 101,
+      "subject_name": "Analiza Matematica",
+      "professor_id": 1,
+      "group_ids": [
+        1,
+        2
+      ],
+      "required_hours": 2,
+      "required_lab": false
+    }
+  ],
+  "groups": [
+    {
+      "id": 1,
+      "name": "Grupa 911",
+      "numbers_of_students": 25,
+      "courses": [
+        101
+      ]
+    }
+  ]
+}

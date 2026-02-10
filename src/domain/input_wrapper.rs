@@ -8,3 +8,4 @@ pub struct TimetableInput{
     pub courses: Vec<Course>,
     pub groups: Vec<Group>,
 }
+
