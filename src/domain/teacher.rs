@@ -4,5 +4,5 @@ use serde::{Deserialize, Serialize};
 pub struct Teacher{
     pub id: usize,
     pub name: String,
-    pub course_id: usize,
+    pub course_id: Vec<usize>,
 }
