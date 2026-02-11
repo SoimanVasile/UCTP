@@ -1,34 +1,68 @@
 use crate::domain::input_wrapper::TimetableInput;
 
-pub struct Schedule{
+/// Represents a candidate solution for the Timetable Problem.
+/// It contains a list of assignments where the index corresponds to the Course ID.
+pub struct Schedule {
+    /// A flat vector representing the gene code.
+    /// - Index: Course ID (from normalized input)
+    /// - Value: (Day, Slot, RoomID)
+    ///   - Day: 0..4 (Mon-Fri)
+    ///   - Slot: 0..5 (2-hour blocks)
+    ///   - RoomID: Index in the input.rooms vector
     pub assignments: Vec<(u32, u32, usize)>,
 }
 
-impl Schedule{
-    pub fn calculate_penalty(&self, input: &TimetableInput){
-        
+impl Schedule {
+    /// Calculates the total "Energy" (Cost) of this schedule.
+    /// Lower energy means a better schedule.
+    ///
+    /// Currently sums up penalties from:
+    /// 1. Room Collisions (Hard Constraint)
+    /// 2. Room Capacity Overflow (Hard Constraint)
+    /// 3. Laboratory Mismatches (Hard Constraint)
+    pub fn calculate_penalty(&self, input: &TimetableInput) -> u32 {
+        // We accumulate penalties from different checkers here
+        self.collision_grid(input)
     }
 
-    fn collision_grid(&self, input: &TimetableInput) -> u32{
+    /// Checks for Hard Constraints related to Room Usage.
+    ///
+    /// # Constraints Checked:
+    /// * **Capacity:** Does the room fit all students? (+10,000 penalty)
+    /// * **Room Type:** If the course needs a Lab, is the room a Lab? (+10,000 penalty)
+    /// * **Double Booking:** Is the room already occupied at this time? (+10,000 penalty)
+    ///
+    /// # Returns
+    /// The total penalty score for these constraints.
+    fn collision_grid(&self, input: &TimetableInput) -> u32 {
         let mut penalty: u32 = 0;
+        
+        // A 3D Grid to track room usage: [Day][Slot][RoomID]
+        // Used to detect double-booking in O(1) time.
         let mut grid = vec![vec![vec![None::<usize>; input.rooms.len()]; 6]; 5];
-        for (course_id, assignment) in self.assignments.iter().enumerate(){
+
+        for (course_id, assignment) in self.assignments.iter().enumerate() {
             let (day, slot, room_id) = *assignment;
             
+            // 1. Retrieve Context
             let course = input.get_course(course_id);
             let room = input.get_room(room_id);
-            if room.capacity < course.capacity_needed(&input.groups){
-                penalty += 10000
+
+            // 2. Check Capacity (Hard Constraint)
+            if room.capacity < course.capacity_needed(&input.groups) {
+                penalty += 10000;
             }
 
-            if course.required_lab == true && room.is_laboratory == false{
-                penalty += 10000
+            // 3. Check Room Type (Hard Constraint)
+            if course.required_lab && !room.is_laboratory {
+                penalty += 10000;
             }
 
-            if grid[day as usize][slot as usize][room_id].is_some(){
-                penalty += 10000
-            }
-            else{
+            // 4. Check Double Booking (Hard Constraint)
+            if grid[day as usize][slot as usize][room_id].is_some() {
+                penalty += 10000;
+            } else {
+                // Mark the room as occupied by this course
                 grid[day as usize][slot as usize][room_id] = Some(course_id);
             }
         }
