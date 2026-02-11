@@ -10,11 +10,8 @@ pub struct TimetableInput{
 }
 
 impl TimetableInput{
-    pub fn get_course(&self, course_id: usize) -> &Course{
+    pub fn return_course_with_id(&self, course_id: usize) -> &Course{
         &self.courses[course_id]
-    }
-    pub fn get_room(&self, room_id: usize) -> &Room{
-        &self.rooms[room_id]
     }
 }
 
