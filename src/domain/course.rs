@@ -12,6 +12,7 @@ pub struct Course{
 
 use crate::domain::group::Group;
 impl Course{
+    ///Calculates the capacity needed for this course
     pub fn capacity_needed(&self, vec_of_groups: &Vec<Group>) -> u32{
         let mut capacity_needed: u32 = 0;
         for &group_id in &self.group_ids{
