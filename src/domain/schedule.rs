@@ -22,7 +22,7 @@ impl Schedule {
     /// 3. Laboratory Mismatches (Hard Constraint)
     pub fn calculate_penalty(&self, input: &TimetableInput) -> u32 {
         // We accumulate penalties from different checkers here
-        self.collision_grid(input)
+        self.collision_grid(input)+self.gap_teleportation_check(input)
     }
 
     /// Checks for Hard Constraints related to Room Usage.
@@ -67,5 +67,61 @@ impl Schedule {
             }
         }
         penalty
+    }
+
+    fn gap_teleportation_check(&self, input: &TimetableInput) -> u32{
+        let mut penalty: u32 = 0;
+
+        for group in &input.groups{
+            let mut grid_teleportation = [[None::<usize>; 6]; 5];
+            for course_id in &group.courses{
+                let (day, slot, room_id) = self.assignments[*course_id];
+                if grid_teleportation[day as usize][slot as usize].is_some(){
+                    penalty += 10000;
+                } else{
+                    grid_teleportation[day as usize][slot as usize] = Some(room_id);
+                    let slot_after = slot+1;
+                    if slot!=0{
+                        penalty += self.check_adiecent(room_id, grid_teleportation[day as usize][slot as usize-1]);
+                    }
+                    if slot_after <= 5 {
+                        penalty += self.check_adiecent(room_id, grid_teleportation[day as usize][slot_after as usize]);
+                    }
+                }
+            }
+            for day in &grid_teleportation{
+                penalty += self.check_in_day(day);
+            }
+        }
+        penalty
+    }
+    fn check_in_day(&self, day: &[Option<usize>; 6]) -> u32{
+        let mut slot: usize = 0;
+        let mut penalty = 0;
+        let mut gap = 0;
+        while day[slot] == None && slot<6{
+            slot+=1;
+        }
+        if slot < 6 {
+            while slot<6{
+                if day[slot].is_some(){
+                    if gap != 0 {
+                        penalty += 20-gap*5;
+                    }
+                    gap = 0;
+                }
+                else {
+                    gap += 1;
+                }
+            }
+        }
+        penalty
+    }
+    fn check_adiecent(&self, current_room: usize, adiecent_room: Option<usize>) -> u32{
+            let penalty = match adiecent_room{
+                None => return 0,
+                Some(t) => if t != current_room {10000} else {0},
+            };
+            penalty
     }
 }

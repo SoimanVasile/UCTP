@@ -12,7 +12,8 @@ mod tests {
                     "name": "C309",
                     "capacity": 100,
                     "is_laboratory": false,
-                    "free": []
+                    "free": [],
+                    "building_id": 0
                 }
             ],
             "teachers": [

@@ -1,5 +1,5 @@
 use UCTP::domain::schedule::Schedule;
-use UCTP::domain::{input_wrapper::TimetableInput};
+use UCTP::domain::input_wrapper::TimetableInput;
 
 #[cfg(test)]
 mod tests {
@@ -15,11 +15,11 @@ mod tests {
             rooms: vec![
                 Room { // Room 0: Big Lecture Hall
                     id: 0, name: "C1".to_string(), capacity: 200, 
-                    is_laboratory: false, free: vec![] 
+                    is_laboratory: false, free: vec![], building_id: 0 
                 },
                 Room { // Room 1: Small Lab
                     id: 1, name: "L1".to_string(), capacity: 50, 
-                    is_laboratory: true, free: vec![]
+                    is_laboratory: true, free: vec![], building_id: 0 
                 },
             ],
             groups: vec![
