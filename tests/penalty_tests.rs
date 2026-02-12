@@ -58,7 +58,7 @@ mod tests {
         
         // NOTE: This should actually FAIL capacity for Course 1 (100 students > 50 cap)
         // Let's see if your code catches it.
-        let penalty = schedule.calculate_penalty(&input);
+        let penalty = schedule.collision_grid(&input);
         
         // Expect: 10,000 penalty (Capacity overflow on Room 1)
         assert_eq!(penalty, 10000, "Should punish capacity overflow");
@@ -77,7 +77,7 @@ mod tests {
             ]
         };
 
-        let penalty = schedule.calculate_penalty(&input);
+        let penalty = schedule.collision_grid(&input);
         assert_eq!(penalty, 0, "Perfect schedule should have 0 penalty");
     }
 
@@ -93,7 +93,7 @@ mod tests {
             ]
         };
 
-        let penalty = schedule.calculate_penalty(&input);
+        let penalty = schedule.collision_grid(&input);
         
         // We expect ONE collision penalty.
         // However, Course 1 is a LAB, and Room 0 is NOT a Lab.
@@ -113,7 +113,7 @@ mod tests {
             ]
         };
 
-        let penalty = schedule.calculate_penalty(&input);
+        let penalty = schedule.collision_grid(&input);
         assert_eq!(penalty, 10000, "Should punish putting a Lab in a Lecture Hall");
     }
 }

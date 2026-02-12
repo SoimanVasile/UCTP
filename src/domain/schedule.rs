@@ -34,7 +34,7 @@ impl Schedule {
     ///
     /// # Returns
     /// The total penalty score for these constraints.
-    fn collision_grid(&self, input: &TimetableInput) -> u32 {
+    pub fn collision_grid(&self, input: &TimetableInput) -> u32 {
         let mut penalty: u32 = 0;
         
         // A 3D Grid to track room usage: [Day][Slot][RoomID]
@@ -69,7 +69,7 @@ impl Schedule {
         penalty
     }
 
-    fn gap_teleportation_check(&self, input: &TimetableInput) -> u32{
+    pub fn gap_teleportation_check(&self, input: &TimetableInput) -> u32{
         let mut penalty: u32 = 0;
 
         for group in &input.groups{
