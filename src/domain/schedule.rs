@@ -75,16 +75,11 @@ impl Schedule {
         for group in &input.groups{
             let mut grid_teleportation = [[None::<usize>; 6]; 5];
             for course_id in &group.courses{
-                if *course_id >= self.assignments.len(){
-                    continue;
-                }
                 let (day, slot, room_id) = self.assignments[*course_id];
-                println!("day: {}, slot:{}", day, slot);
                 if grid_teleportation[day as usize][slot as usize].is_some(){
                     penalty += 10000;
                 } else{
                     grid_teleportation[day as usize][slot as usize] = Some(room_id);
-                    println!("{:?}", grid_teleportation);
                     let slot_after = slot+1;
                     if slot!=0{
                         penalty += self.check_adiecent(room_id, &grid_teleportation[day as usize][slot as usize-1], &input);
@@ -95,7 +90,6 @@ impl Schedule {
                 }
             }
             for day in &grid_teleportation{
-                println!("{}", penalty);
                 penalty += self.check_in_day(day);
             }
         }
@@ -105,13 +99,11 @@ impl Schedule {
         let mut slot: usize = 0;
         let mut penalty = 0;
         let mut gap = 0;
-        println!("day: {:?}", day);
         while slot < 6 && day[slot] == None{
             slot+=1;
         }
         while slot<6{
             if day[slot].is_some(){
-                println!("slot: {}, gap:{}",slot, gap);
                 if gap != 0 {
                     penalty += 20-(gap-1)*5;
                 }
