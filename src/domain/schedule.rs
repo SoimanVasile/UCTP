@@ -75,21 +75,27 @@ impl Schedule {
         for group in &input.groups{
             let mut grid_teleportation = [[None::<usize>; 6]; 5];
             for course_id in &group.courses{
+                if *course_id >= self.assignments.len(){
+                    continue;
+                }
                 let (day, slot, room_id) = self.assignments[*course_id];
+                println!("day: {}, slot:{}", day, slot);
                 if grid_teleportation[day as usize][slot as usize].is_some(){
                     penalty += 10000;
                 } else{
                     grid_teleportation[day as usize][slot as usize] = Some(room_id);
+                    println!("{:?}", grid_teleportation);
                     let slot_after = slot+1;
                     if slot!=0{
-                        penalty += self.check_adiecent(room_id, grid_teleportation[day as usize][slot as usize-1]);
+                        penalty += self.check_adiecent(room_id, &grid_teleportation[day as usize][slot as usize-1], &input);
                     }
                     if slot_after <= 5 {
-                        penalty += self.check_adiecent(room_id, grid_teleportation[day as usize][slot_after as usize]);
+                        penalty += self.check_adiecent(room_id, &grid_teleportation[day as usize][slot_after as usize], &input);
                     }
                 }
             }
             for day in &grid_teleportation{
+                println!("{}", penalty);
                 penalty += self.check_in_day(day);
             }
         }
@@ -99,28 +105,29 @@ impl Schedule {
         let mut slot: usize = 0;
         let mut penalty = 0;
         let mut gap = 0;
-        while day[slot] == None && slot<6{
+        println!("day: {:?}", day);
+        while slot < 6 && day[slot] == None{
             slot+=1;
         }
-        if slot < 6 {
-            while slot<6{
-                if day[slot].is_some(){
-                    if gap != 0 {
-                        penalty += 20-gap*5;
-                    }
-                    gap = 0;
+        while slot<6{
+            if day[slot].is_some(){
+                println!("slot: {}, gap:{}",slot, gap);
+                if gap != 0 {
+                    penalty += 20-(gap-1)*5;
                 }
-                else {
-                    gap += 1;
-                }
+                gap = 0;
             }
+            else {
+                gap += 1;
+            }
+            slot+=1;
         }
-        penalty
+        penalty 
     }
-    fn check_adiecent(&self, current_room: usize, adiecent_room: Option<usize>) -> u32{
+    fn check_adiecent(&self, current_room: usize, adiecent_room: &Option<usize>, input: &TimetableInput) -> u32{
             let penalty = match adiecent_room{
                 None => return 0,
-                Some(t) => if t != current_room {10000} else {0},
+                Some(t) =>{println!("{}    {}", t, current_room); if input.rooms[*t].building_id != input.rooms[current_room].building_id {10000} else {0}},
             };
             penalty
     }
