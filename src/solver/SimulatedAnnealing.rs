@@ -1,5 +1,5 @@
 use crate::domain::{input_wrapper::TimetableInput, schedule::Schedule};
-use rand;
+use rand::Rng;
 
 #[derive(Debug, Clone)]
 pub struct simulated_annealing{
@@ -20,7 +20,15 @@ impl simulated_annealing{
     }
 
     fn generate_first_schedule(&self) -> Schedule{
+        let mut rng = rand::thread_rng();
         let mut assignments: Vec<(u32, u32, usize)> = Vec::new();
+
+        for _ in 0..self.input.courses.len(){
+            let day: u32 = rng.gen_range(0..5);
+            let slot: u32 = rng.gen_range(0..6);
+            let room_id: usize = rng.gen_range(0..self.input.rooms.len()); 
+            assignments.push((day, slot, room_id));
+        }
 
         Schedule { assignments }
     }
