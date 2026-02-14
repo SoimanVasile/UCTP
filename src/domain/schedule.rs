@@ -75,19 +75,7 @@ impl Schedule {
         for group in &input.groups{
             let mut grid_teleportation = [[None::<usize>; 6]; 5];
             for course_id in &group.courses{
-                let (day, slot, room_id) = self.assignments[*course_id];
-                if grid_teleportation[day as usize][slot as usize].is_some(){
-                    penalty += 10000;
-                } else{
-                    grid_teleportation[day as usize][slot as usize] = Some(room_id);
-                    let slot_after = slot+1;
-                    if slot!=0{
-                        penalty += self.check_adiecent(room_id, &grid_teleportation[day as usize][slot as usize-1], &input);
-                    }
-                    if slot_after <= 5 {
-                        penalty += self.check_adiecent(room_id, &grid_teleportation[day as usize][slot_after as usize], &input);
-                    }
-                }
+                penalty += self.check_penalty_teleportation(&mut grid_teleportation, input, course_id);
             }
             for day in &grid_teleportation{
                 penalty += self.check_in_day(day);
@@ -95,6 +83,25 @@ impl Schedule {
         }
         penalty
     }
+    fn check_penalty_teleportation(&self, grid_teleportation: &mut [[Option<usize>; 6]; 5], input: &TimetableInput, course_id: &usize) -> u32{
+        let mut penalty = 0;
+        
+        let (day, slot, room_id) = self.assignments[*course_id];
+        if grid_teleportation[day as usize][slot as usize].is_some(){
+            penalty += 10000;
+        } else{
+            grid_teleportation[day as usize][slot as usize] = Some(room_id);
+            let slot_after = slot+1;
+            if slot!=0{
+                penalty += self.check_adiecent(room_id, &grid_teleportation[day as usize][slot as usize-1], &input);
+            }
+            if slot_after <= 5 {
+                penalty += self.check_adiecent(room_id, &grid_teleportation[day as usize][slot_after as usize], &input);
+            }
+        }
+        penalty
+    }
+
     fn check_in_day(&self, day: &[Option<usize>; 6]) -> u32{
         let mut slot: usize = 0;
         let mut penalty = 0;
