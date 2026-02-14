@@ -105,19 +105,24 @@ impl Schedule {
     fn check_in_day(&self, day: &[Option<usize>; 6]) -> u32{
         let mut slot: usize = 0;
         let mut penalty = 0;
-        let mut gap = 0;
+        let mut gap_size = 0;
         while slot < 6 && day[slot] == None{
             slot+=1;
         }
         while slot<6{
             if day[slot].is_some(){
-                if gap != 0 {
-                    penalty += 20-(gap-1)*5;
+                if gap_size != 0 {
+                    penalty += match gap_size {
+                        1 => 20,
+                        2 => 15,
+                        3 => 10,
+                        _ => 5,
+                    };
                 }
-                gap = 0;
+                gap_size = 0;
             }
             else {
-                gap += 1;
+                gap_size += 1;
             }
             slot+=1;
         }
@@ -126,7 +131,7 @@ impl Schedule {
     fn check_adiecent(&self, current_room: usize, adiecent_room: &Option<usize>, input: &TimetableInput) -> u32{
             let penalty = match adiecent_room{
                 None => return 0,
-                Some(t) =>{println!("{}    {}", t, current_room); if input.rooms[*t].building_id != input.rooms[current_room].building_id {10000} else {0}},
+                Some(t) =>if input.rooms[*t].building_id != input.rooms[current_room].building_id {10000} else {0},
             };
             penalty
     }
