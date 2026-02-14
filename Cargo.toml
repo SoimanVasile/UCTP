@@ -5,6 +5,7 @@ edition = "2024"
 
 [dependencies]
 cargo = "0.94.0"
+rand = "0.10.0"
 serde = { version = "1.0.228", features = ["serde_derive", "derive"] }
 serde_json = "1.0.149"
 watch = "0.2.3"
