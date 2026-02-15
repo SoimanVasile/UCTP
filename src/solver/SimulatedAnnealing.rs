@@ -38,18 +38,38 @@ impl simulated_annealing{
         let mut current_assignments: Schedule = self.generate_first_schedule();
         let mut current_penalty: u32 = current_assignments.calculate_penalty(&self.input);
 
-        let mut best_assignments = self.generate_first_schedule();
+        let mut best_schedule = self.generate_first_schedule();
 
-        best_assignments.assignments = current_assignments.assignments.clone();
+        best_schedule.assignments = current_assignments.assignments.clone();
         let mut best_penalty = current_penalty;
 
-        let mut start_temp = self.start_temp;
+        let mut temp = self.start_temp;
         for _ in 0..self.max_iterations{
             let neighbour_schedule = self.generate_neighbour(&current_assignments);
             let neighbour_penalty = neighbour_schedule.calculate_penalty(&self.input);
 
+            let diff = (current_penalty as i64) - (neighbour_penalty as i64);
+
+            let should_change = if diff > 0{
+                true
+                }
+                else{
+                    let probability = (diff as f64 / temp).exp();
+                    let random_probability: f64 = rng.r#gen::<f64>();
+                    random_probability < probability
+            };
+            if should_change {
+                current_assignments.assignments = neighbour_schedule.assignments;
+                current_penalty = neighbour_penalty;
+
+                if best_penalty > current_penalty{
+                    best_schedule.assignments = current_assignments.assignments.clone();
+                    best_penalty = current_penalty;
+                }
+            }
+            temp *= self.cooling_rate;
         }
-        best_assignments
+        best_schedule
     }
 
     fn generate_neighbour(&self, current_assignments: &Schedule) -> Schedule{
