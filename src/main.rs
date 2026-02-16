@@ -1,14 +1,16 @@
-use UCTP::domain::{course::Course, teacher::Teacher, group::Group, room::Room, input_wrapper::TimetableInput};
-use serde_json::from_reader;
-use std::fs::File;
-use std::io::BufReader;
+use UCTP::io::{read_input::read_json, normalize_input::normalize_data};
+use UCTP::solver::simulated_annealing::SimulatedAnnealing;
+use UCTP::io::output::print_schedule;
 
 fn main() {
-    let file_json = File::open("dummy_data.json").expect("I couldnt open the file, make sure that u placed the file");
-    let buf_reader = BufReader::new(file_json);
+    let raw_input = read_json();
 
-    let input_data: TimetableInput = from_reader(buf_reader).expect("Couldnt read the json");
+    let normalized_input = normalize_data(raw_input);
 
-    println!("I could succesfully read the input");
-    println!("{:?}", input_data);
+    let sa = SimulatedAnnealing::new(normalized_input.clone() , 10000.0, 0.9995, 100000);
+    let schedule = sa.run();
+    let best_penalty = schedule.calculate_penalty(&normalized_input);
+
+    println!("The penalty is {}", best_penalty);
+    print_schedule(&schedule, &normalized_input);
 }

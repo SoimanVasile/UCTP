@@ -2,14 +2,14 @@ use crate::domain::{input_wrapper::TimetableInput, schedule::Schedule};
 use rand::Rng;
 
 #[derive(Debug, Clone)]
-pub struct simulated_annealing{
+pub struct SimulatedAnnealing{
     pub input: TimetableInput,
     pub start_temp: f64,
     pub cooling_rate: f64,
     pub max_iterations: u32,
 }
 
-impl simulated_annealing{
+impl SimulatedAnnealing{
     pub fn new(input: TimetableInput, start_temp: f64, cooling_rate: f64, max_iterations: u32) -> Self {
         Self {
             input,

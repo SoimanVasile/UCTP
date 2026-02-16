@@ -1,1 +1,1 @@
-pub mod SimulatedAnnealing;
+pub mod simulated_annealing;

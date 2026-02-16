@@ -1,44 +1,615 @@
 {
   "rooms": [
     {
-      "id": 1,
-      "name": "C309",
-      "capacity": 100,
+      "id": 101,
+      "name": "Amphitheater Alpha (Bld 1)",
+      "capacity": 250,
       "is_laboratory": false,
+      "building_id": 1,
+      "free": []
+    },
+    {
+      "id": 102,
+      "name": "Amphitheater Beta (Bld 1)",
+      "capacity": 250,
+      "is_laboratory": false,
+      "building_id": 1,
+      "free": []
+    },
+    {
+      "id": 201,
+      "name": "Lab 1 (Bld 1)",
+      "capacity": 35,
+      "is_laboratory": true,
+      "building_id": 1,
+      "free": []
+    },
+    {
+      "id": 202,
+      "name": "Lab 2 (Bld 1)",
+      "capacity": 35,
+      "is_laboratory": true,
+      "building_id": 1,
+      "free": []
+    },
+    {
+      "id": 301,
+      "name": "Lab 3 (Bld 2)",
+      "capacity": 35,
+      "is_laboratory": true,
+      "building_id": 2,
+      "free": []
+    },
+    {
+      "id": 302,
+      "name": "Lab 4 (Bld 2)",
+      "capacity": 35,
+      "is_laboratory": true,
+      "building_id": 2,
+      "free": []
+    },
+    {
+      "id": 303,
+      "name": "Lab 5 (Bld 2)",
+      "capacity": 35,
+      "is_laboratory": true,
+      "building_id": 2,
       "free": []
     }
   ],
   "teachers": [
     {
       "id": 1,
-      "name": "Prof. Popescu",
+      "name": "Prof. Math",
       "course_id": [
-        101,
-        102
+        1001
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Prof. CS Basics",
+      "course_id": [
+        1002
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Prof. Algo",
+      "course_id": [
+        2001
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Prof. AI",
+      "course_id": [
+        3001
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Lab Assistant",
+      "course_id": []
+    }
+  ],
+  "groups": [
+    {
+      "id": 11,
+      "name": "CS Year 1 - G1",
+      "numbers_of_students": 30,
+      "courses": [
+        1001,
+        1002,
+        1101
+      ]
+    },
+    {
+      "id": 12,
+      "name": "CS Year 1 - G2",
+      "numbers_of_students": 30,
+      "courses": [
+        1001,
+        1002,
+        1102
+      ]
+    },
+    {
+      "id": 13,
+      "name": "CS Year 1 - G3",
+      "numbers_of_students": 30,
+      "courses": [
+        1001,
+        1002,
+        1103
+      ]
+    },
+    {
+      "id": 14,
+      "name": "CS Year 1 - G4",
+      "numbers_of_students": 30,
+      "courses": [
+        1001,
+        1002,
+        1104
+      ]
+    },
+    {
+      "id": 15,
+      "name": "CS Year 1 - G5",
+      "numbers_of_students": 30,
+      "courses": [
+        1001,
+        1002,
+        1105
+      ]
+    },
+    {
+      "id": 16,
+      "name": "CS Year 1 - G6",
+      "numbers_of_students": 30,
+      "courses": [
+        1001,
+        1002,
+        1106
+      ]
+    },
+    {
+      "id": 17,
+      "name": "CS Year 1 - G7",
+      "numbers_of_students": 30,
+      "courses": [
+        1001,
+        1002,
+        1107
+      ]
+    },
+    {
+      "id": 21,
+      "name": "CS Year 2 - G1",
+      "numbers_of_students": 30,
+      "courses": [
+        2001,
+        2002,
+        2101
+      ]
+    },
+    {
+      "id": 22,
+      "name": "CS Year 2 - G2",
+      "numbers_of_students": 30,
+      "courses": [
+        2001,
+        2002,
+        2102
+      ]
+    },
+    {
+      "id": 23,
+      "name": "CS Year 2 - G3",
+      "numbers_of_students": 30,
+      "courses": [
+        2001,
+        2002,
+        2103
+      ]
+    },
+    {
+      "id": 24,
+      "name": "CS Year 2 - G4",
+      "numbers_of_students": 30,
+      "courses": [
+        2001,
+        2002,
+        2104
+      ]
+    },
+    {
+      "id": 25,
+      "name": "CS Year 2 - G5",
+      "numbers_of_students": 30,
+      "courses": [
+        2001,
+        2002,
+        2105
+      ]
+    },
+    {
+      "id": 26,
+      "name": "CS Year 2 - G6",
+      "numbers_of_students": 30,
+      "courses": [
+        2001,
+        2002,
+        2106
+      ]
+    },
+    {
+      "id": 27,
+      "name": "CS Year 2 - G7",
+      "numbers_of_students": 30,
+      "courses": [
+        2001,
+        2002,
+        2107
+      ]
+    },
+    {
+      "id": 31,
+      "name": "CS Year 3 - G1",
+      "numbers_of_students": 30,
+      "courses": [
+        3001,
+        3002,
+        3101
+      ]
+    },
+    {
+      "id": 32,
+      "name": "CS Year 3 - G2",
+      "numbers_of_students": 30,
+      "courses": [
+        3001,
+        3002,
+        3102
+      ]
+    },
+    {
+      "id": 33,
+      "name": "CS Year 3 - G3",
+      "numbers_of_students": 30,
+      "courses": [
+        3001,
+        3002,
+        3103
+      ]
+    },
+    {
+      "id": 34,
+      "name": "CS Year 3 - G4",
+      "numbers_of_students": 30,
+      "courses": [
+        3001,
+        3002,
+        3104
+      ]
+    },
+    {
+      "id": 35,
+      "name": "CS Year 3 - G5",
+      "numbers_of_students": 30,
+      "courses": [
+        3001,
+        3002,
+        3105
+      ]
+    },
+    {
+      "id": 36,
+      "name": "CS Year 3 - G6",
+      "numbers_of_students": 30,
+      "courses": [
+        3001,
+        3002,
+        3106
+      ]
+    },
+    {
+      "id": 37,
+      "name": "CS Year 3 - G7",
+      "numbers_of_students": 30,
+      "courses": [
+        3001,
+        3002,
+        3107
       ]
     }
   ],
   "courses": [
     {
-      "id": 101,
-      "subject_name": "Analiza Matematica",
+      "id": 1001,
+      "subject_name": "Math (Lecture)",
       "professor_id": 1,
       "group_ids": [
-        1,
-        2
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
       ],
       "required_hours": 2,
       "required_lab": false
-    }
-  ],
-  "groups": [
+    },
     {
-      "id": 1,
-      "name": "Grupa 911",
-      "numbers_of_students": 25,
-      "courses": [
-        101
-      ]
+      "id": 1002,
+      "subject_name": "Programming (Lecture)",
+      "professor_id": 2,
+      "group_ids": [
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17
+      ],
+      "required_hours": 2,
+      "required_lab": false
+    },
+    {
+      "id": 1101,
+      "subject_name": "Programming Lab (G1)",
+      "professor_id": 5,
+      "group_ids": [
+        11
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 1102,
+      "subject_name": "Programming Lab (G2)",
+      "professor_id": 5,
+      "group_ids": [
+        12
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 1103,
+      "subject_name": "Programming Lab (G3)",
+      "professor_id": 5,
+      "group_ids": [
+        13
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 1104,
+      "subject_name": "Programming Lab (G4)",
+      "professor_id": 5,
+      "group_ids": [
+        14
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 1105,
+      "subject_name": "Programming Lab (G5)",
+      "professor_id": 5,
+      "group_ids": [
+        15
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 1106,
+      "subject_name": "Programming Lab (G6)",
+      "professor_id": 5,
+      "group_ids": [
+        16
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 1107,
+      "subject_name": "Programming Lab (G7)",
+      "professor_id": 5,
+      "group_ids": [
+        17
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 2001,
+      "subject_name": "Algorithms (Lecture)",
+      "professor_id": 3,
+      "group_ids": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "required_hours": 2,
+      "required_lab": false
+    },
+    {
+      "id": 2002,
+      "subject_name": "Databases (Lecture)",
+      "professor_id": 3,
+      "group_ids": [
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27
+      ],
+      "required_hours": 2,
+      "required_lab": false
+    },
+    {
+      "id": 2101,
+      "subject_name": "Algo Lab (G1)",
+      "professor_id": 5,
+      "group_ids": [
+        21
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 2102,
+      "subject_name": "Algo Lab (G2)",
+      "professor_id": 5,
+      "group_ids": [
+        22
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 2103,
+      "subject_name": "Algo Lab (G3)",
+      "professor_id": 5,
+      "group_ids": [
+        23
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 2104,
+      "subject_name": "Algo Lab (G4)",
+      "professor_id": 5,
+      "group_ids": [
+        24
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 2105,
+      "subject_name": "Algo Lab (G5)",
+      "professor_id": 5,
+      "group_ids": [
+        25
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 2106,
+      "subject_name": "Algo Lab (G6)",
+      "professor_id": 5,
+      "group_ids": [
+        26
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 2107,
+      "subject_name": "Algo Lab (G7)",
+      "professor_id": 5,
+      "group_ids": [
+        27
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 3001,
+      "subject_name": "AI (Lecture)",
+      "professor_id": 4,
+      "group_ids": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "required_hours": 2,
+      "required_lab": false
+    },
+    {
+      "id": 3002,
+      "subject_name": "Web Dev (Lecture)",
+      "professor_id": 4,
+      "group_ids": [
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37
+      ],
+      "required_hours": 2,
+      "required_lab": false
+    },
+    {
+      "id": 3101,
+      "subject_name": "AI Lab (G1)",
+      "professor_id": 5,
+      "group_ids": [
+        31
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 3102,
+      "subject_name": "AI Lab (G2)",
+      "professor_id": 5,
+      "group_ids": [
+        32
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 3103,
+      "subject_name": "AI Lab (G3)",
+      "professor_id": 5,
+      "group_ids": [
+        33
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 3104,
+      "subject_name": "AI Lab (G4)",
+      "professor_id": 5,
+      "group_ids": [
+        34
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 3105,
+      "subject_name": "AI Lab (G5)",
+      "professor_id": 5,
+      "group_ids": [
+        35
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 3106,
+      "subject_name": "AI Lab (G6)",
+      "professor_id": 5,
+      "group_ids": [
+        36
+      ],
+      "required_hours": 2,
+      "required_lab": true
+    },
+    {
+      "id": 3107,
+      "subject_name": "AI Lab (G7)",
+      "professor_id": 5,
+      "group_ids": [
+        37
+      ],
+      "required_hours": 2,
+      "required_lab": true
     }
   ]
 }

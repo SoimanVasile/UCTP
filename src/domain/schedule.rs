@@ -2,6 +2,7 @@ use crate::domain::input_wrapper::TimetableInput;
 
 /// Represents a candidate solution for the Timetable Problem.
 /// It contains a list of assignments where the index corresponds to the Course ID.
+#[derive(Debug, Clone)]
 pub struct Schedule {
     /// A flat vector representing the gene code.
     /// - Index: Course ID (from normalized input)

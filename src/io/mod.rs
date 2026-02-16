@@ -1,2 +1,3 @@
-pub mod read_json;
-pub mod normalize_data;
+pub mod read_input;
+pub mod normalize_input;
+pub mod output;
