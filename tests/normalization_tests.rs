@@ -1,7 +1,7 @@
 use UCTP::domain::{
     course::Course, group::Group, input_wrapper::TimetableInput, room::Room, teacher::Teacher,
 };
-use UCTP::io::normalize_data::normalize_data;
+use UCTP::io::normalize_input::normalize_data;
 
 #[test]
 fn test_normalization_logic() {
