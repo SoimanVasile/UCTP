@@ -102,6 +102,22 @@ impl Schedule {
                 penalty += self.check_in_day(day);
             }
         }
+
+        for teacher in &input.teachers{
+            // Stack-allocated grid to track this specific group's week.
+            // [Day][Slot] -> Option<RoomID>
+            let mut grid_teleportation = [[None::<usize>; 6]; 5];
+
+
+            // Phase 1: Fill the grid and check for instant collisions/teleportation
+            for course_id in &teacher.course_id{
+                penalty += self.check_penalty_teleportation(&mut grid_teleportation, input, course_id);
+            }
+            // Phase 2: Scan the filled grid for time gaps
+            for day in &grid_teleportation {
+                penalty += self.check_in_day(day);
+            }
+        }
         penalty
     }
 
@@ -143,6 +159,8 @@ impl Schedule {
         }
         penalty
     }
+
+
 
     /// Calculates the "Gap Penalty" for a single day.
     ///
@@ -220,6 +238,9 @@ impl Schedule {
                 let (day, slot, room_id) = self.assignments[*course_id];
                 if schedule_teacher[day as usize][slot as usize].is_some(){
                     penalty += HARD_CONSTRAINT;
+                }
+                else{
+                    
                 }
             }
         }
