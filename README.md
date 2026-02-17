@@ -18,10 +18,16 @@ I chose Rust for its **memory safety** and **zero-cost abstractions**, allowing 
 ## ✨ Key Features
 
 * **⚡ Blazing Fast:** Solves complex schedules (20+ groups, hundreds of slots) in <1 second.
-* **🛡️ Conflict-Free:** Guarantees 0 collisions for Rooms and Student Groups.
+* **🛡️ Conflict-Free:** Guarantees 0 collisions for Rooms, Teachers, and Student Groups.
 * **🧠 Smart Constraints:**
-    * **Hard Constraints:** Room capacity, Laboratory equipment checks, Building travel time.
-    * **Soft Constraints:** Minimizes student gaps (empty hours) for a better quality of life.
+    * **Hard Constraints:**
+        * **Room Capacity:** Students must fit in the room.
+        * **Laboratory Equipment:** Labs must be in rooms with computers/equipment.
+        * **Teacher Availability:** Professors cannot be in two places at once.
+        * **Teleportation:** Prevents back-to-back classes in different buildings.
+    * **Soft Constraints:**
+        * **Gap Minimization:** Reduces awkward empty hours between classes.
+        * **Compact Schedule:** Penalizes long 12-hour days, preferring compact blocks (e.g., 8am-2pm).
 * **📊 Visual Output:** Renders a clean, readable ASCII timetable for every student group.
 
 ## 🚀 Quick Start
@@ -90,5 +96,5 @@ src/
 * [x] Room & Group Collision Detection
 * [x] Laboratory & Capacity Constraints
 * [x] Gap Minimization (Soft Constraint)
-* [ ] Teacher Conflict Constraints
+* [x] Teacher Conflict Constraints (Double Booking & Teleportation)
 * [ ] Parallel Execution (Multithreading)
