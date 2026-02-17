@@ -1,8 +1,9 @@
 use crate::domain::input_wrapper::TimetableInput;
+const HARD_CONSTRAINT: u32 = 100000;
 
+#[derive(Debug, Clone)]
 /// Represents a candidate solution for the Timetable Problem.
 /// It contains a list of assignments where the index corresponds to the Course ID.
-#[derive(Debug, Clone)]
 pub struct Schedule {
     /// A flat vector representing the gene code.
     /// - Index: Course ID (from normalized input)
@@ -54,17 +55,17 @@ impl Schedule {
 
             // 2. Check Capacity (Hard Constraint)
             if room.capacity < course.capacity_needed(&input.groups) {
-                penalty += 10000;
+                penalty += HARD_CONSTRAINT;
             }
 
             // 3. Check Room Type (Hard Constraint)
             if course.required_lab && !room.is_laboratory {
-                penalty += 10000;
+                penalty += HARD_CONSTRAINT;
             }
 
             // 4. Check Double Booking (Hard Constraint)
             if grid[day as usize][slot as usize][room_id].is_some() {
-                penalty += 10000;
+                penalty += HARD_CONSTRAINT;
             } else {
                 // Mark the room as occupied by this course
                 grid[day as usize][slot as usize][room_id] = Some(course_id);
@@ -125,7 +126,7 @@ impl Schedule {
         
         // Check 1: Student Collision (Hard)
         if grid_teleportation[day as usize][slot as usize].is_some() {
-            penalty += 10000;
+            penalty += HARD_CONSTRAINT;
         } else {
             // Place the course in the grid
             grid_teleportation[day as usize][slot as usize] = Some(room_id);
@@ -162,7 +163,8 @@ impl Schedule {
         while slot < 6 && day[slot] == None {
             slot += 1;
         }
-
+        let start = slot as u32;
+        let mut end = slot as u32;
         // 2. Scan the "Active Day"
         while slot < 6 {
             if day[slot].is_some() {
@@ -175,12 +177,17 @@ impl Schedule {
                         _ => 5,  // 8+ hours
                     };
                 }
+                end = slot as u32;
                 gap_size = 0; // Reset gap counter
             } else {
                 // We found an empty slot within the active day
                 gap_size += 1;
             }
             slot += 1;
+        }
+        let excess: u32 = end-start+1;
+        if excess>4{
+            penalty += (excess-4)*(excess-4)*50;
         }
         penalty 
     }
@@ -194,13 +201,28 @@ impl Schedule {
         let penalty = match adiecent_room {
             None => return 0,
             Some(t) => {
+                //This checks if the rooms are in a different building
                 if input.rooms[*t].building_id != input.rooms[current_room].building_id {
-                    10000
+                    HARD_CONSTRAINT
                 } else {
                     0
                 }
             },
         };
+        penalty
+    }
+
+    fn collision_teacher(&self, input: &TimetableInput) -> u32{
+        let mut penalty: u32 = 0;
+        for teacher in &input.teachers{
+            let mut schedule_teacher: [[Option<usize>; 6]; 5] = [[None::<usize>; 6]; 5];
+            for course_id in &teacher.course_id{
+                let (day, slot, room_id) = self.assignments[*course_id];
+                if schedule_teacher[day as usize][slot as usize].is_some(){
+                    penalty += HARD_CONSTRAINT;
+                }
+            }
+        }
         penalty
     }
 }

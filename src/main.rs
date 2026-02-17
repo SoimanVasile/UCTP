@@ -7,7 +7,7 @@ fn main() {
 
     let normalized_input = normalize_data(raw_input);
 
-    let sa = SimulatedAnnealing::new(normalized_input.clone() , 10000.0, 0.9995, 100000);
+    let sa = SimulatedAnnealing::new(normalized_input.clone() , 2000.0, 0.9995, 10000000);
     let schedule = sa.run();
     let best_penalty = schedule.calculate_penalty(&normalized_input);
 
