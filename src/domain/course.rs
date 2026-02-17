@@ -8,7 +8,7 @@ use crate::domain::group::Group;
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Course {
     /// Unique identifier for the course (Database ID).
-    pub id: u32,
+    pub id: usize,
     
     /// The name of the subject (e.g., "Operating Systems").
     pub subject_name: String,

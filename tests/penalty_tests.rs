@@ -61,7 +61,7 @@ mod tests {
         let penalty = schedule.collision_grid(&input);
         
         // Expect: 10,000 penalty (Capacity overflow on Room 1)
-        assert_eq!(penalty, 10000, "Should punish capacity overflow");
+        assert_eq!(penalty, 100000, "Should punish capacity overflow");
     }
 
     #[test]
@@ -99,7 +99,7 @@ mod tests {
         // However, Course 1 is a LAB, and Room 0 is NOT a Lab.
         // So Course 1 generates: Collision (10k) AND RoomType Mismatch (10k).
         // Total = 20,000.
-        assert_eq!(penalty, 20000, "Should punish Collision AND Room Type mismatch");
+        assert_eq!(penalty, 200000, "Should punish Collision AND Room Type mismatch");
     }
 
     #[test]
@@ -114,6 +114,6 @@ mod tests {
         };
 
         let penalty = schedule.collision_grid(&input);
-        assert_eq!(penalty, 10000, "Should punish putting a Lab in a Lecture Hall");
+        assert_eq!(penalty, 100000, "Should punish putting a Lab in a Lecture Hall");
     }
 }

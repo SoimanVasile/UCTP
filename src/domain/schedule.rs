@@ -27,7 +27,7 @@ impl Schedule {
     /// 6. Time Gaps between classes (Soft Constraint)
     pub fn calculate_penalty(&self, input: &TimetableInput) -> u32 {
         // We accumulate penalties from different checkers here
-        self.collision_grid(input) + self.gap_teleportation_check(input)
+        self.collision_grid(input) + self.gap_teleportation_check_groups(input)
     }
 
     /// Checks for Hard Constraints related to Room Usage.
@@ -84,7 +84,7 @@ impl Schedule {
     ///
     /// # Returns
     /// The combined penalty for all groups.
-    pub fn gap_teleportation_check(&self, input: &TimetableInput) -> u32 {
+    pub fn gap_teleportation_check_groups(&self, input: &TimetableInput) -> u32 {
         let mut penalty: u32 = 0;
 
         for group in &input.groups {
@@ -103,6 +103,11 @@ impl Schedule {
             }
         }
 
+        penalty
+    }
+
+    pub fn gap_teleportation_check_teachers(&self, input: &TimetableInput) -> u32{
+        let mut penalty: u32 = 0;
         for teacher in &input.teachers{
             // Stack-allocated grid to track this specific group's week.
             // [Day][Slot] -> Option<RoomID>
@@ -118,6 +123,7 @@ impl Schedule {
                 penalty += self.check_in_day(day);
             }
         }
+
         penalty
     }
 
@@ -230,20 +236,4 @@ impl Schedule {
         penalty
     }
 
-    fn collision_teacher(&self, input: &TimetableInput) -> u32{
-        let mut penalty: u32 = 0;
-        for teacher in &input.teachers{
-            let mut schedule_teacher: [[Option<usize>; 6]; 5] = [[None::<usize>; 6]; 5];
-            for course_id in &teacher.course_id{
-                let (day, slot, room_id) = self.assignments[*course_id];
-                if schedule_teacher[day as usize][slot as usize].is_some(){
-                    penalty += HARD_CONSTRAINT;
-                }
-                else{
-                    
-                }
-            }
-        }
-        penalty
-    }
 }
