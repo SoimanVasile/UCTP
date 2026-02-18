@@ -27,7 +27,7 @@ impl Schedule {
     /// 6. Time Gaps between classes (Soft Constraint)
     pub fn calculate_penalty(&self, input: &TimetableInput) -> u32 {
         // We accumulate penalties from different checkers here
-        self.collision_grid(input) + self.gap_teleportation_check_groups(input)
+        self.collision_grid(input) + self.gap_teleportation_check_groups(input) + self.gap_teleportation_check_teachers(input)
     }
 
     /// Checks for Hard Constraints related to Room Usage.
@@ -155,12 +155,12 @@ impl Schedule {
             
             // Check 2: Teleportation (Look Backwards)
             if slot != 0 {
-                penalty += self.check_adiecent(room_id, &grid_teleportation[day as usize][slot as usize - 1], &input);
+                penalty += self.check_adjacent(room_id, &grid_teleportation[day as usize][slot as usize - 1], &input);
             }
             // Check 3: Teleportation (Look Forwards)
             let slot_after = slot + 1;
             if slot_after <= 5 {
-                penalty += self.check_adiecent(room_id, &grid_teleportation[day as usize][slot_after as usize], &input);
+                penalty += self.check_adjacent(room_id, &grid_teleportation[day as usize][slot_after as usize], &input);
             }
         }
         penalty
@@ -221,7 +221,7 @@ impl Schedule {
     /// # Returns
     /// * **10,000:** If the rooms are in different buildings (Teleportation).
     /// * **0:** If the rooms are in the same building, or if `adjacent_room` is None.
-    fn check_adiecent(&self, current_room: usize, adiecent_room: &Option<usize>, input: &TimetableInput) -> u32 {
+    fn check_adjacent(&self, current_room: usize, adiecent_room: &Option<usize>, input: &TimetableInput) -> u32 {
         let penalty = match adiecent_room {
             None => return 0,
             Some(t) => {

@@ -48,6 +48,10 @@ impl SimulatedAnnealing{
             let neighbour_schedule = self.generate_neighbour(&current_assignments);
             let neighbour_penalty = neighbour_schedule.calculate_penalty(&self.input);
 
+            if neighbour_penalty == 0{
+                return neighbour_schedule;
+            }
+
             let diff = (current_penalty as i64) - (neighbour_penalty as i64);
 
             let should_change = if diff > 0{

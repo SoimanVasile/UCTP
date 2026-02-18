@@ -6,6 +6,7 @@ default-run = "UCTP"
 
 
 [dependencies]
+toml = "0.8"
 cargo = "0.94.0"
 rand = "0.8"
 serde = { version = "1.0.228", features = ["serde_derive", "derive"] }

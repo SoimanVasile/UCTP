@@ -1,0 +1,4 @@
+start_temp = 10000.0
+cooling_rate = 0.999
+max_iterations = 10000000
+file_name = "input.json"

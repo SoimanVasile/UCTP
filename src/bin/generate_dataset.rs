@@ -68,7 +68,7 @@ fn main() {
     
     // Save to JSON
     let json = serde_json::to_string_pretty(&input).unwrap();
-    let mut file = File::create("hard_data.json").unwrap();
+    let mut file = File::create("input.json").unwrap();
     file.write_all(json.as_bytes()).unwrap();
     println!("🔥 Successfully generated 'hard_data.json' with {} courses and {} groups!", input.courses.len(), input.groups.len());
 }
