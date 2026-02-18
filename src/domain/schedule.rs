@@ -1,5 +1,5 @@
 use crate::domain::input_wrapper::TimetableInput;
-use std::hash::Hash;
+use crate::domain::group::Group;
 const HARD_CONSTRAINT: u32 = 100000;
 
 
@@ -30,8 +30,8 @@ impl Schedule {
     pub fn calculate_penalty(&self, input: &TimetableInput) -> u32 {
         // We accumulate penalties from different checkers here
         self.collision_grid(input) +
-            self.gap_teleportation_check(input, &input.groups, |g| g.courses.clone()) + 
-            self.gap_teleportation_check(input, &input.teachers, |g| g.course_id.clone())
+            self.gap_teleportation_check(input, &input.groups, |g| g.courses.iter().copied()) + 
+            self.gap_teleportation_check(input, &input.teachers, |g| g.course_id.iter().copied())
     }
 
     /// Checks for Hard Constraints related to Room Usage.
@@ -88,10 +88,9 @@ impl Schedule {
     ///
     /// # Returns
     /// The combined penalty for all groups.
-    pub fn gap_teleportation_check<T, I, F>(&self, input: &TimetableInput, list_of_items: &[T], get_id: F) -> u32 
+    pub fn gap_teleportation_check<T, F>(&self, input: &TimetableInput, list_of_items: &[T], get_id: F) -> u32 
     where
-        I: IntoIterator<Item = usize>,
-        F: Fn(&T) -> I{
+        F: Fn(&T) -> std::iter::Copied<std::slice::Iter<'_, usize>>,{
         let mut penalty: u32 = 0;
 
         for item in list_of_items{
@@ -100,7 +99,7 @@ impl Schedule {
             let mut grid_teleportation = [[None::<usize>; 6]; 5];
             
             // Phase 1: Fill the grid and check for instant collisions/teleportation
-            for course_id in get_id(item).into_iter() {
+            for course_id in get_id(item) {
                 penalty += self.check_penalty_teleportation(&mut grid_teleportation, input, &course_id);
             }
             

@@ -131,7 +131,7 @@ mod tests {
             ],
         };
 
-        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.clone());
+        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.iter().copied());
         assert_eq!(penalty, 100000, "Should punish moving between buildings instantly");
     }
 
@@ -149,7 +149,7 @@ mod tests {
             ],
         };
 
-        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.clone());
+        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.iter().copied());
         assert_eq!(penalty, 0, "Should allow moving within the same building");
     }
 
@@ -168,7 +168,7 @@ mod tests {
             ],
         };
 
-        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.clone());
+        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.iter().copied());
         assert_eq!(penalty, 20, "2 hour gap should be 20 points");
     }
 
@@ -186,7 +186,7 @@ mod tests {
             ],
         };
 
-        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.clone());
+        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.iter().copied());
         assert_eq!(penalty, 15, "4 hour gap should be 15 points");
     }
 
@@ -203,7 +203,7 @@ mod tests {
             ],
         };
 
-        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.clone());
+        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.iter().copied());
         assert_eq!(penalty, 60, "6 hour gap should be 10 points and 50 points for extended the schedule to 10 hours");
     }
 
@@ -220,7 +220,7 @@ mod tests {
             ],
         };
 
-        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.clone());
+        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.iter().copied());
         assert_eq!(penalty, 205, "8 hour gap should be 5 points and 200 points for the extended schedule and 200 points for the extended schedule");
     }
     
@@ -247,7 +247,7 @@ mod tests {
         // or just accept that we are reusing course indices for the sake of the penalty function
         // (The penalty function looks at assignments, not unique course logic, unless you check for duplicates)
 
-        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.clone());
+        let penalty = schedule.gap_teleportation_check(&input, &input.groups, |g| g.courses.iter().copied());
         assert_eq!(penalty, 235, "Should sum multiple gaps (20 + 15 = 35) and 200 points for the extended shedule of 12 hours");
     }
 }
