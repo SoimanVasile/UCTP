@@ -1,5 +1,7 @@
 use crate::domain::input_wrapper::TimetableInput;
+use std::hash::Hash;
 const HARD_CONSTRAINT: u32 = 100000;
+
 
 #[derive(Debug, Clone)]
 /// Represents a candidate solution for the Timetable Problem.
@@ -27,7 +29,9 @@ impl Schedule {
     /// 6. Time Gaps between classes (Soft Constraint)
     pub fn calculate_penalty(&self, input: &TimetableInput) -> u32 {
         // We accumulate penalties from different checkers here
-        self.collision_grid(input) + self.gap_teleportation_check_groups(input) + self.gap_teleportation_check_teachers(input)
+        self.collision_grid(input) +
+            self.gap_teleportation_check(input, &input.groups, |g| g.courses.clone()) + 
+            self.gap_teleportation_check(input, &input.teachers, |g| g.course_id.clone())
     }
 
     /// Checks for Hard Constraints related to Room Usage.
@@ -84,17 +88,20 @@ impl Schedule {
     ///
     /// # Returns
     /// The combined penalty for all groups.
-    pub fn gap_teleportation_check_groups(&self, input: &TimetableInput) -> u32 {
+    pub fn gap_teleportation_check<T, I, F>(&self, input: &TimetableInput, list_of_items: &[T], get_id: F) -> u32 
+    where
+        I: IntoIterator<Item = usize>,
+        F: Fn(&T) -> I{
         let mut penalty: u32 = 0;
 
-        for group in &input.groups {
+        for item in list_of_items{
             // Stack-allocated grid to track this specific group's week.
             // [Day][Slot] -> Option<RoomID>
             let mut grid_teleportation = [[None::<usize>; 6]; 5];
             
             // Phase 1: Fill the grid and check for instant collisions/teleportation
-            for course_id in &group.courses {
-                penalty += self.check_penalty_teleportation(&mut grid_teleportation, input, course_id);
+            for course_id in get_id(item).into_iter() {
+                penalty += self.check_penalty_teleportation(&mut grid_teleportation, input, &course_id);
             }
             
             // Phase 2: Scan the filled grid for time gaps
@@ -102,28 +109,6 @@ impl Schedule {
                 penalty += self.check_in_day(day);
             }
         }
-
-        penalty
-    }
-
-    pub fn gap_teleportation_check_teachers(&self, input: &TimetableInput) -> u32{
-        let mut penalty: u32 = 0;
-        for teacher in &input.teachers{
-            // Stack-allocated grid to track this specific group's week.
-            // [Day][Slot] -> Option<RoomID>
-            let mut grid_teleportation = [[None::<usize>; 6]; 5];
-
-
-            // Phase 1: Fill the grid and check for instant collisions/teleportation
-            for course_id in &teacher.course_id{
-                penalty += self.check_penalty_teleportation(&mut grid_teleportation, input, course_id);
-            }
-            // Phase 2: Scan the filled grid for time gaps
-            for day in &grid_teleportation {
-                penalty += self.check_in_day(day);
-            }
-        }
-
         penalty
     }
 

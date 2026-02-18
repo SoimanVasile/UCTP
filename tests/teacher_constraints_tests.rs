@@ -71,7 +71,7 @@ fn test_teacher_double_booking() {
     let schedule = Schedule { assignments };
 
     // 3. Verify: Should trigger heavy penalty
-    let penalty = schedule.gap_teleportation_check_teachers(&input);
+    let penalty = schedule.gap_teleportation_check(&input, &input.teachers, |g| g.course_id.clone());
     assert!(penalty >= 10000, "Teacher double-booking should have massive penalty");
 }
 
@@ -107,7 +107,7 @@ fn test_teacher_teleportation_penalty() {
     let schedule = Schedule { assignments };
 
     // 3. Verify: Should trigger teleportation penalty
-    let penalty = schedule.gap_teleportation_check_teachers(&input);
+    let penalty = schedule.gap_teleportation_check(&input, &input.teachers, |g| g.course_id.clone());
     assert!(penalty > 0, "Teacher moving between buildings instantly should be penalized");
 }
 
@@ -141,6 +141,6 @@ fn test_teacher_safe_schedule() {
     let schedule = Schedule { assignments };
 
     // 3. Verify: Should be 0 penalty
-    let penalty = schedule.gap_teleportation_check_teachers(&input);
+    let penalty = schedule.gap_teleportation_check(&input, &input.teachers, |g| g.course_id.clone());
     assert_eq!(penalty, 0, "Same building movement should be allowed");
 }
